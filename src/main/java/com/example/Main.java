@@ -1,7 +1,6 @@
 package com.example;
 
 import java.nio.file.Paths;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,8 +10,6 @@ public class Main {
         }
         String filePath = args[0];
         FileHandler fileHandler = new FileHandler();
-        Set<String> uniqueLines = fileHandler.readFile(Paths.get(filePath));
-        uniqueLines.stream().limit(50).forEach(System.out::println);
-        System.out.println(uniqueLines.size());
+        fileHandler.processFile(Paths.get(filePath));
     }
 }

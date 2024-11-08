@@ -58,7 +58,7 @@ public class LineGrouper {
             groupedLines.computeIfAbsent(root, k -> new ArrayList<>()).add(lineList.get(i));
         }
         List<List<String>> result = new ArrayList<>(groupedLines.values());
-//        result.sort((a, b) -> Integer.compare(b.size(), a.size()));
+        result.sort((a, b) -> Integer.compare(b.size(), a.size()));
 
         return result;
     }

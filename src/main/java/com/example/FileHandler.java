@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +34,16 @@ public class FileHandler {
     }
 
     public void processFile(Path filePath) {
-
+        Set<String> uniqueLines = readFile(filePath);
+//        System.out.println(uniqueLines.size());
+        LineGrouper lineGrouper = new LineGrouper(uniqueLines.size());
+        List<List<String>> groups = lineGrouper.groupLines(uniqueLines);
+        List<List<String>> filteredGroups = groups.stream()
+                .filter(group -> group.size() > 1)
+                .sorted((g1, g2) -> Integer.compare(g2.size(), g1.size()))
+                .collect(Collectors.toList());
+//        System.out.println("number of groups: " + filteredGroups.size());
+        writeToFile(filteredGroups, Paths.get("output.txt"));
     }
 
     // writing groups to file
