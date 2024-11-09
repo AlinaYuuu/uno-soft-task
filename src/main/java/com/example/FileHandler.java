@@ -35,26 +35,18 @@ public class FileHandler {
 
     public void processFile(Path filePath) {
         Set<String> uniqueLines = readFile(filePath);
-//        System.out.println(uniqueLines.size());
         LineGrouper lineGrouper = new LineGrouper(uniqueLines.size());
         List<List<String>> groups = lineGrouper.groupLines(uniqueLines);
         List<List<String>> filteredGroups = groups.stream()
                 .filter(group -> group.size() > 1)
                 .sorted((g1, g2) -> Integer.compare(g2.size(), g1.size()))
                 .collect(Collectors.toList());
-//        System.out.println("number of groups: " + filteredGroups.size());
         writeToFile(filteredGroups, Paths.get("output.txt"));
     }
 
     // writing groups to file
     private void writeToFile(List<List<String>> groups, Path outputPath) {
         try (BufferedWriter writer = Files.newBufferedWriter(outputPath)) {
-            groups.sort((group1, group2) -> {
-                int totalElements1 = getTotalElementsInGroup(group1);
-                int totalElements2 = getTotalElementsInGroup(group2);
-                return Integer.compare(totalElements2, totalElements1);
-            });
-
             writer.write(groups.size() + "\n\n");
 
             AtomicInteger groupNumber = new AtomicInteger(1); // COUNTER
@@ -69,11 +61,5 @@ public class FileHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private int getTotalElementsInGroup(List<String> group) {
-        return group.stream()
-                .mapToInt(line -> (int) line.chars().filter(c -> c == ';').count() + 1)
-                .sum();
     }
 }
