@@ -10,3 +10,5 @@ mvn clean package
 ```
 java -jar target/uno-soft-task-1.jar path-file.txt
 ```
+---
+![execution result.png](img.png)
